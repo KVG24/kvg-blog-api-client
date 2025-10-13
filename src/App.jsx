@@ -1,9 +1,10 @@
 import "./App.css";
+import BlogList from "./components/BlogList";
 
 function App() {
     return (
         <>
-            <div>Hello world</div>
+            <BlogList></BlogList>
         </>
     );
 }
