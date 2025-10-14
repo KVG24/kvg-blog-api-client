@@ -17,7 +17,11 @@ export default function BlogPost() {
             <NavigationBar />
             <Container>
                 <h1>{data.title}</h1>
-                <p>{data.content}</p>
+                {data.content
+                    .split("\n")
+                    .map((paragraph, index) =>
+                        paragraph.trim() ? <p key={index}>{paragraph}</p> : null
+                    )}
             </Container>
         </>
     );
