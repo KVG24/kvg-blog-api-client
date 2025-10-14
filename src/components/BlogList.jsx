@@ -21,6 +21,7 @@ export default function BlogList() {
                                 <BlogCard
                                     key={item.id}
                                     title={item.title}
+                                    description={item.description}
                                     createdAt={item.createdAt}
                                     updatedAt={item.updatedAt}
                                 />

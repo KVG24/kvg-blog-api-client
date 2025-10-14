@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function BlogCard({ title, createdAt, updatedAt }) {
+export default function BlogCard({ title, description, createdAt, updatedAt }) {
     function convertDate(date) {
         return new Date(date).toLocaleString("en-US", {
             day: "2-digit",
@@ -15,8 +15,13 @@ export default function BlogCard({ title, createdAt, updatedAt }) {
     return (
         <Container>
             <p>{title}</p>
-            <p>Created: {convertDate(createdAt)}</p>
-            {updatedAt && <p>Updated: {convertDate(updatedAt)}</p>}
+            <Description>{description}</Description>
+            <Dates>
+                <p>Created: {convertDate(createdAt)}</p>
+                {updatedAt !== createdAt && (
+                    <p>Updated: {convertDate(updatedAt)}</p>
+                )}
+            </Dates>
         </Container>
     );
 }
@@ -32,10 +37,26 @@ const Container = styled.div`
     gap: 0.7rem;
     cursor: pointer;
     box-sizing: border-box;
-    transition: all 0.05s ease-in-out;
+    transition: all 0.05s ease-in;
+    position: relative;
+    width: 400px;
 
     &:hover {
         outline: 10px solid #449b9b;
         outline-offset: -10px;
     }
+`;
+
+const Description = styled.p`
+    margin-bottom: 2rem;
+`;
+
+const Dates = styled.div`
+    color: #8f8e8e;
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
 `;
