@@ -1,22 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import {
-    createBrowserRouter,
-    RouterProvider,
-    Navigate,
-} from "react-router-dom";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import App from "./App.jsx";
+import BlogList from "./components/BlogList.jsx";
 import BlogPost from "./components/BlogPost.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        errorElement: <ErrorPage />,
-        children: [{ path: "blog-post", element: <BlogPost /> }],
-    },
+    { path: "/", element: <BlogList />, errorElement: <ErrorPage /> },
+    { path: "/post/:id", element: <BlogPost />, errorElement: <ErrorPage /> },
 ]);
 
 createRoot(document.getElementById("root")).render(

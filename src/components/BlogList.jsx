@@ -3,9 +3,9 @@ import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
 
 export default function BlogList() {
-    const { data, loading, error } = useFetch(
-        import.meta.env.VITE_BLOG_API_URL
-    );
+    const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
+
+    const { data, loading, error } = useFetch(BLOG_API);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error fetching data</p>;
@@ -16,14 +16,15 @@ export default function BlogList() {
             <Container>
                 {data && data.length > 0 ? (
                     data.map(
-                        (item) =>
-                            item.published && (
+                        (blogpost) =>
+                            blogpost.published && (
                                 <BlogCard
-                                    key={item.id}
-                                    title={item.title}
-                                    description={item.description}
-                                    createdAt={item.createdAt}
-                                    updatedAt={item.updatedAt}
+                                    id={blogpost.id}
+                                    key={blogpost.id}
+                                    title={blogpost.title}
+                                    description={blogpost.description}
+                                    createdAt={blogpost.createdAt}
+                                    updatedAt={blogpost.updatedAt}
                                 />
                             )
                     )

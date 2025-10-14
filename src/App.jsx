@@ -1,12 +1,6 @@
 import "./App.css";
-import BlogList from "./components/BlogList";
 
-function App() {
-    return (
-        <>
-            <BlogList></BlogList>
-        </>
-    );
+// App isn't used for top-level routing anymore
+export default function App() {
+    return null;
 }
-
-export default App;

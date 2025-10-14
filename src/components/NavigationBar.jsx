@@ -1,15 +1,50 @@
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export default function NavigationBar() {
     return (
         <>
-            <nav>
-                <ul>
+            <StyledNav>
+                <ul style={{ listStyleType: "none" }}>
                     <li>
-                        <Link to="/blog-list">Blogs</Link>
+                        <StyledLink to="/">Back </StyledLink>
                     </li>
                 </ul>
-            </nav>
+            </StyledNav>
         </>
     );
 }
+
+const StyledLink = styled(Link)`
+    padding: 0.5rem 1rem;
+    color: black;
+    border-radius: 3px;
+    background-color: #449b9b;
+    text-decoration: none;
+    transition: all 0.1s ease-in-out;
+
+    @media (max-width: 500px) {
+        padding: 0.2rem 0.5rem;
+    }
+
+    &:hover {
+        background-color: black;
+        color: #449b9b;
+    }
+`;
+
+const StyledNav = styled.nav`
+    position: absolute;
+    top: 2rem;
+    left: 1rem;
+
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    @media (max-width: 500px) {
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+`;

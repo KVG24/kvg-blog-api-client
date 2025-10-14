@@ -1,6 +1,13 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export default function BlogCard({ title, description, createdAt, updatedAt }) {
+export default function BlogCard({
+    id,
+    title,
+    description,
+    createdAt,
+    updatedAt,
+}) {
     function convertDate(date) {
         return new Date(date).toLocaleString("en-US", {
             day: "2-digit",
@@ -13,16 +20,21 @@ export default function BlogCard({ title, description, createdAt, updatedAt }) {
     }
 
     return (
-        <Container>
-            <p>{title}</p>
-            <Description>{description}</Description>
-            <Dates>
-                <p>Created: {convertDate(createdAt)}</p>
-                {updatedAt !== createdAt && (
-                    <p>Updated: {convertDate(updatedAt)}</p>
-                )}
-            </Dates>
-        </Container>
+        <Link
+            to={`/post/${id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+        >
+            <Container>
+                <p>{title}</p>
+                <Description>{description}</Description>
+                <Dates>
+                    <p>Created: {convertDate(createdAt)}</p>
+                    {updatedAt && updatedAt !== createdAt && (
+                        <p>Updated: {convertDate(updatedAt)}</p>
+                    )}
+                </Dates>
+            </Container>
+        </Link>
     );
 }
 
