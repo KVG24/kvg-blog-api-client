@@ -15,15 +15,17 @@ export default function BlogList() {
             <h1>KVG Blogs</h1>
             <Container>
                 {data && data.length > 0 ? (
-                    data.map((item) => (
-                        <BlogCard
-                            key={item.id}
-                            title={item.title}
-                            createdAt={item.createdAt}
-                            updatedAt={item.updatedAt}
-                            published={item.published}
-                        />
-                    ))
+                    data.map(
+                        (item) =>
+                            item.published && (
+                                <BlogCard
+                                    key={item.id}
+                                    title={item.title}
+                                    createdAt={item.createdAt}
+                                    updatedAt={item.updatedAt}
+                                />
+                            )
+                    )
                 ) : (
                     <p>No items available</p>
                 )}

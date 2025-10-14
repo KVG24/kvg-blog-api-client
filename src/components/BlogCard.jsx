@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function BlogCard({ title, createdAt, updatedAt, published }) {
+export default function BlogCard({ title, createdAt, updatedAt }) {
     function convertDate(date) {
         return new Date(date).toLocaleString("en-US", {
             day: "2-digit",
@@ -17,7 +17,6 @@ export default function BlogCard({ title, createdAt, updatedAt, published }) {
             <p>{title}</p>
             <p>Created: {convertDate(createdAt)}</p>
             {updatedAt && <p>Updated: {convertDate(updatedAt)}</p>}
-            {published ? <p>Published</p> : <p>Unpublished</p>}
         </Container>
     );
 }
