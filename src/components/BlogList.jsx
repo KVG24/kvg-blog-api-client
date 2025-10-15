@@ -1,18 +1,21 @@
 import BlogCard from "./BlogCard";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
+import BlogListSkeletonLoader from "./BlogListSkeletonLoader";
 
 export default function BlogList() {
     const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
 
     const { data, loading, error } = useFetch(BLOG_API);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error fetching data</p>;
+    if (loading) return <BlogListSkeletonLoader />;
+    if (error) return <Error />;
 
     return (
         <>
-            <h1>KVG Blogs</h1>
+            <TitleZone>
+                <h1>KVG Blogs</h1>
+            </TitleZone>
             <Container>
                 {data && data.length > 0 ? (
                     data.map(
@@ -38,10 +41,28 @@ export default function BlogList() {
 
 const Container = styled.div`
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 1rem auto 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+`;
+
+const TitleZone = styled.div`
+    width: 100%;
+    background-color: #3d3d3d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+`;
+
+const Error = styled.p`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
 `;

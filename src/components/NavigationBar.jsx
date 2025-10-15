@@ -34,9 +34,10 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledNav = styled.nav`
+    z-index: 100;
     position: absolute;
-    top: 2rem;
-    left: 1rem;
+    top: 1rem;
+    left: 0.5rem;
 
     ul {
         padding: 0;

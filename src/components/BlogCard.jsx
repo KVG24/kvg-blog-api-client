@@ -28,7 +28,7 @@ export default function BlogCard({
                 <p>{title}</p>
                 <Description>{description}</Description>
                 <Dates>
-                    <p>Created: {convertDate(createdAt)}</p>
+                    <p>Posted: {convertDate(createdAt)}</p>
                     {updatedAt && updatedAt !== createdAt && (
                         <p>Updated: {convertDate(updatedAt)}</p>
                     )}
