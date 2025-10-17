@@ -22,6 +22,9 @@ const StyledLink = styled(Link)`
     background-color: #449b9b;
     text-decoration: none;
     transition: all 0.1s ease-in-out;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
 
     @media (max-width: 500px) {
         padding: 0.2rem 0.5rem;
@@ -35,9 +38,6 @@ const StyledLink = styled(Link)`
 
 const StyledNav = styled.nav`
     z-index: 100;
-    position: absolute;
-    top: 1rem;
-    left: 0.5rem;
 
     ul {
         padding: 0;
