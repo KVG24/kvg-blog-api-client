@@ -8,20 +8,20 @@ export default function BlogPostSkeletonLoader() {
             <Container>
                 <TitleZone>
                     <SkeletonBlock
-                        width="500px"
-                        height="50px"
-                        margin="1.4rem 0"
+                        $width="500px"
+                        $height="50px"
+                        $margin="1.4rem 0"
                     />
                 </TitleZone>
                 <TextZone>
                     <SkeletonBlock
-                        width="150px"
-                        height="30px"
-                        margin="0"
-                        align="flex-start"
-                        top="-60px"
+                        $width="150px"
+                        $height="30px"
+                        $margin="0"
+                        $align="flex-start"
+                        $top="-60px"
                     />
-                    <SkeletonBlock width="100%" height="600px" />
+                    <SkeletonBlock $width="100%" $height="600px" />
                 </TextZone>
             </Container>
         </>
@@ -35,11 +35,11 @@ const shimmer = keyframes`
 `;
 
 const SkeletonBlock = styled.div`
-    width: ${(props) => props.width || "100%"};
-    height: ${(props) => props.height || "20px"};
-    margin: ${(props) => props.margin || "0"};
-    align-self: ${(props) => props.align || "center"};
-    top: ${(props) => props.top || "0"};
+    width: ${(props) => props.$width || "100%"};
+    height: ${(props) => props.$height || "20px"};
+    margin: ${(props) => props.$margin || "0"};
+    align-self: ${(props) => props.$align || "center"};
+    top: ${(props) => props.$top || "0"};
     background-color: #7e7e7e;
     border-radius: 5px;
     position: relative;

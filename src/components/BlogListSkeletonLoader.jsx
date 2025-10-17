@@ -9,12 +9,12 @@ export default function BlogListSkeletonLoader() {
             <Container>
                 {Array.from({ length: 6 }).map((_, i) => (
                     <CardSkeleton key={i}>
-                        <SkeletonBlock width="100px" height="18px" />
-                        <SkeletonBlock width="300px" height="40px" />
+                        <SkeletonBlock $width="100px" $height="18px" />
+                        <SkeletonBlock $width="300px" $height="40px" />
                         <SkeletonBlock
-                            width="100px"
-                            height="18px"
-                            align="flex-start"
+                            $width="100px"
+                            $height="18px"
+                            $align="flex-start"
                         />
                     </CardSkeleton>
                 ))}
@@ -63,9 +63,9 @@ const shimmer = keyframes`
 const SkeletonBlock = styled.div`
     background-color: #7e7e7e;
     border-radius: 5px;
-    height: ${(props) => props.height || "20px"};
-    width: ${(props) => props.width || "100%"};
-    align-self: ${(props) => props.align || "center"};
+    height: ${(props) => props.$height || "20px"};
+    width: ${(props) => props.$width || "100%"};
+    align-self: ${(props) => props.$align || "center"};
     position: relative;
     overflow: hidden;
 
