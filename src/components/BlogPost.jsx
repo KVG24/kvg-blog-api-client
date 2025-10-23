@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
+import DOMPurify from "dompurify";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
 
@@ -39,13 +40,11 @@ export default function BlogPost() {
                                 <p>Updated: {convertDate(data.updatedAt)}</p>
                             )}
                     </Dates>
-                    {data.content
-                        .split("\n")
-                        .map((paragraph, index) =>
-                            paragraph.trim() ? (
-                                <Paragraph key={index}>{paragraph}</Paragraph>
-                            ) : null
-                        )}
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(data.content),
+                        }}
+                    />
                 </TextZone>
             </Container>
         </>
