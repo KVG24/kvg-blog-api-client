@@ -1,15 +1,41 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import useFetch from "../hooks/useFetch";
 import DOMPurify from "dompurify";
+import useFetch from "../hooks/useFetch";
 import NavigationBar from "./NavigationBar";
 import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
 
-export default function BlogPost() {
-    const BLOG_API = import.meta.env.VITE_BLOG_API_URL || "/posts";
-    const { id } = useParams();
+const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
 
-    const { data, loading, error } = useFetch(`${BLOG_API}/${id}`);
+export default function BlogPost() {
+    const [commenterName, setCommenterName] = useState("");
+    const [commentText, setCommentText] = useState("");
+    const { id } = useParams();
+    const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
+
+    const handleSubmitComment = async (e) => {
+        e.preventDefault();
+
+        const commentData = { creator: commenterName, text: commentText };
+
+        try {
+            const response = await fetch(`${BLOG_API}/posts/${id}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(commentData),
+            });
+
+            if (!response.ok) throw new Error("Failed to create comment");
+
+            return await response.json();
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
 
     function convertDate(date) {
         return new Date(date).toLocaleString("en-US", {
@@ -46,6 +72,42 @@ export default function BlogPost() {
                         }}
                     />
                 </TextZone>
+                <CommentSection>
+                    <CommentSubmitForm onSubmit={handleSubmitComment}>
+                        <CommenterNameInput
+                            type="text"
+                            placeholder="Name"
+                            value={commenterName}
+                            onChange={(e) => setCommenterName(e.target.value)}
+                        />
+                        <CommentTextarea
+                            value={commentText}
+                            placeholder="Leave a comment here"
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <SubmitCommentBtn type="submit">
+                            Submit
+                        </SubmitCommentBtn>
+                    </CommentSubmitForm>
+
+                    <CommentsContainer>
+                        {data?.comments?.length > 0 ? (
+                            data.comments.map((comment) => (
+                                <CommentBlock key={comment.id}>
+                                    <p>
+                                        <strong>{comment.creator}:</strong>
+                                    </p>
+                                    <CommentText>{comment.text}</CommentText>
+                                    <CommentDate>
+                                        {convertDate(comment.createdAt)}
+                                    </CommentDate>
+                                </CommentBlock>
+                            ))
+                        ) : (
+                            <p>No comments yet</p>
+                        )}
+                    </CommentsContainer>
+                </CommentSection>
             </Container>
         </>
     );
@@ -92,6 +154,71 @@ const TextZone = styled.div`
     position: relative;
 `;
 
-const Paragraph = styled.p`
-    margin-bottom: 1rem;
+const CommentSection = styled.div`
+    padding: 1rem;
+    border: 1px solid white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 800px;
+`;
+
+const CommentSubmitForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+`;
+
+const SubmitCommentBtn = styled.button`
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background-color: #449b9b;
+    color: black;
+    transition: 0.1s all ease-in-out;
+
+    &:hover {
+        background-color: black;
+        color: #449b9b;
+    }
+`;
+
+const CommentsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+const CommentBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid #747474;
+    padding: 0.5rem;
+    border-radius: 3px;
+`;
+
+const CommenterNameInput = styled.input`
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+`;
+
+const CommentTextarea = styled.textarea`
+    padding: 1rem;
+    border-radius: 5px;
+    width: 80%;
+`;
+
+const CommentText = styled.p`
+    word-break: break-word;
+`;
+
+const CommentDate = styled.p`
+    color: #919191;
+    font-size: 0.8rem;
 `;

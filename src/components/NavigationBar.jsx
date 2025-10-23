@@ -7,7 +7,7 @@ export default function NavigationBar() {
             <StyledNav>
                 <ul style={{ listStyleType: "none" }}>
                     <li>
-                        <StyledLink to="/">Back </StyledLink>
+                        <StyledLink to="/">All Posts</StyledLink>
                     </li>
                 </ul>
             </StyledNav>
@@ -25,6 +25,7 @@ const StyledLink = styled(Link)`
     position: absolute;
     top: 1rem;
     left: 1rem;
+    font-weight: 900;
 
     @media (max-width: 500px) {
         padding: 0.2rem 0.5rem;

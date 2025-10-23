@@ -1,12 +1,12 @@
-import BlogCard from "./BlogCard";
 import styled from "styled-components";
 import useFetch from "../hooks/useFetch";
+import BlogCard from "./BlogCard";
 import BlogListSkeletonLoader from "./BlogListSkeletonLoader";
 
-export default function BlogList() {
-    const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
+const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
 
-    const { data, loading, error } = useFetch(BLOG_API);
+export default function BlogList() {
+    const { data, loading, error } = useFetch(`${BLOG_API}/posts`);
 
     if (loading) return <BlogListSkeletonLoader />;
     if (error) return <Error />;
