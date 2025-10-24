@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import DOMPurify from "dompurify";
@@ -9,10 +9,18 @@ import BlogPostSkeletonLoader from "./BlogPostSkeletonLoader";
 const BLOG_API = import.meta.env.VITE_BLOG_API_URL;
 
 export default function BlogPost() {
-    const [commenterName, setCommenterName] = useState("");
-    const [commentText, setCommentText] = useState("");
     const { id } = useParams();
     const { data, loading, error } = useFetch(`${BLOG_API}/posts/${id}`);
+    const [commenterName, setCommenterName] = useState("");
+    const [commentText, setCommentText] = useState("");
+    const [comments, setComments] = useState([]);
+
+    // load comments into local state on change
+    useEffect(() => {
+        if (data?.comments) {
+            setComments(data.comments);
+        }
+    }, [data]);
 
     const handleSubmitComment = async (e) => {
         e.preventDefault();
@@ -30,7 +38,14 @@ export default function BlogPost() {
 
             if (!response.ok) throw new Error("Failed to create comment");
 
-            return await response.json();
+            const newComment = await response.json();
+
+            // Append new comment to local state
+            setComments((prev) => [...prev, newComment]);
+
+            // Clear form
+            setCommenterName("");
+            setCommentText("");
         } catch (err) {
             console.error(err);
             return null;
@@ -73,26 +88,10 @@ export default function BlogPost() {
                     />
                 </TextZone>
                 <CommentSection>
-                    <CommentSubmitForm onSubmit={handleSubmitComment}>
-                        <CommenterNameInput
-                            type="text"
-                            placeholder="Name"
-                            value={commenterName}
-                            onChange={(e) => setCommenterName(e.target.value)}
-                        />
-                        <CommentTextarea
-                            value={commentText}
-                            placeholder="Leave a comment here"
-                            onChange={(e) => setCommentText(e.target.value)}
-                        />
-                        <SubmitCommentBtn type="submit">
-                            Submit
-                        </SubmitCommentBtn>
-                    </CommentSubmitForm>
-
+                    <h2>Comments</h2>
                     <CommentsContainer>
-                        {data?.comments?.length > 0 ? (
-                            data.comments.map((comment) => (
+                        {comments.length > 0 ? (
+                            comments.map((comment) => (
                                 <CommentBlock key={comment.id}>
                                     <p>
                                         <strong>{comment.creator}:</strong>
@@ -107,6 +106,25 @@ export default function BlogPost() {
                             <p>No comments yet</p>
                         )}
                     </CommentsContainer>
+                    <h2>Leave a comment:</h2>
+                    <CommentSubmitForm onSubmit={handleSubmitComment}>
+                        <CommenterNameInput
+                            type="text"
+                            name="name"
+                            placeholder="Your name"
+                            value={commenterName}
+                            onChange={(e) => setCommenterName(e.target.value)}
+                        />
+                        <CommentTextarea
+                            value={commentText}
+                            name="text"
+                            placeholder="Leave a comment here"
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <SubmitCommentBtn type="submit">
+                            Submit
+                        </SubmitCommentBtn>
+                    </CommentSubmitForm>
                 </CommentSection>
             </Container>
         </>
@@ -131,6 +149,7 @@ const Error = styled.p`
 
 const TitleZone = styled.div`
     border-radius: 5px;
+    max-width: 1100px;
     width: 100%;
     background-color: #3d3d3d;
     display: flex;
@@ -138,6 +157,8 @@ const TitleZone = styled.div`
     justify-content: center;
     align-items: center;
     padding: 2rem 0;
+    border: 1px solid #3d3d3d;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
 `;
 
 const Dates = styled.div`
@@ -145,7 +166,7 @@ const Dates = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    top: -70px;
+    top: -75px;
 `;
 
 const TextZone = styled.div`
@@ -156,12 +177,19 @@ const TextZone = styled.div`
 
 const CommentSection = styled.div`
     padding: 1rem;
-    border: 1px solid white;
+    background-color: #3d3d3d;
+    border: 1px solid #5a5959;
+    box-shadow: 0px 0px 10px 5px #0f0f0f;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 800px;
+    max-width: 1100px;
+    width: 100%;
+
+    & h2 {
+        margin: 1rem 0 0 0;
+    }
 `;
 
 const CommentSubmitForm = styled.form`
@@ -169,7 +197,22 @@ const CommentSubmitForm = styled.form`
     flex-direction: column;
     gap: 0.5rem;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+`;
+
+const CommenterNameInput = styled.input`
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #242424;
+`;
+
+const CommentTextarea = styled.textarea`
+    padding: 1rem;
+    border-radius: 5px;
+    width: calc(100% - 2rem);
+    font-family: inherit;
+    background-color: #242424;
 `;
 
 const SubmitCommentBtn = styled.button`
@@ -199,26 +242,18 @@ const CommentBlock = styled.div`
     gap: 0.5rem;
     border: 1px solid #747474;
     padding: 0.5rem;
-    border-radius: 3px;
-`;
-
-const CommenterNameInput = styled.input`
-    padding: 0.5rem;
     border-radius: 5px;
-    border: none;
-`;
-
-const CommentTextarea = styled.textarea`
-    padding: 1rem;
-    border-radius: 5px;
-    width: 80%;
 `;
 
 const CommentText = styled.p`
     word-break: break-word;
+    background-color: #555555;
+    padding: 0.5rem;
+    border-radius: 5px;
+    white-space: pre-wrap;
 `;
 
 const CommentDate = styled.p`
-    color: #919191;
+    color: #bebebe;
     font-size: 0.8rem;
 `;
