@@ -185,7 +185,7 @@ const CommentSection = styled.div`
     flex-direction: column;
     gap: 1rem;
     max-width: 1100px;
-    width: 100%;
+    width: calc(100% - 0.5rem);
 
     & h2 {
         margin: 1rem 0 0 0;
@@ -210,7 +210,7 @@ const CommenterNameInput = styled.input`
 const CommentTextarea = styled.textarea`
     padding: 1rem;
     border-radius: 5px;
-    width: calc(100% - 2rem);
+    width: 100%;
     font-family: inherit;
     background-color: #242424;
 `;
