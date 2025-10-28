@@ -172,6 +172,7 @@ const Dates = styled.div`
 const TextZone = styled.div`
     padding: 1rem;
     max-width: 1000px;
+    width: 100%;
     position: relative;
 `;
 

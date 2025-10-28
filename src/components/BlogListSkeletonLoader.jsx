@@ -7,11 +7,11 @@ export default function BlogListSkeletonLoader() {
                 <TitleZone>
                     <h1>KVG Blogs</h1>
                 </TitleZone>
+                <Warning>
+                    It can take up to 1 minute of loading because server is
+                    deployed on free Render account
+                </Warning>
                 <PostContainer>
-                    <Warning>
-                        It can take up to 1 minute of loading because server is
-                        deployed on free Render account
-                    </Warning>
                     {Array.from({ length: 6 }).map((_, i) => (
                         <CardSkeleton key={i}>
                             <SkeletonBlock $width="100px" $height="18px" />
@@ -40,8 +40,16 @@ const Container = styled.div`
 `;
 
 const Warning = styled.p`
-    font-size: 2rem;
-    color: #f56161;
+    font-size: 1.5rem;
+    color: #df2c2c;
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+    background-color: #3a3a3a;
+    padding: 2rem;
+    border-radius: 20px;
+    z-index: 100;
 `;
 
 const TitleZone = styled.div`
