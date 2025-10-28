@@ -25,7 +25,7 @@ export default function BlogCard({
             style={{ textDecoration: "none", color: "inherit" }}
         >
             <Container>
-                <p>{title}</p>
+                <Title>{title}</Title>
                 <Description>{description}</Description>
                 <Dates>
                     <p>Posted: {convertDate(createdAt)}</p>
@@ -57,6 +57,10 @@ const Container = styled.div`
         outline: 10px solid #449b9b;
         outline-offset: -10px;
     }
+`;
+
+const Title = styled.p`
+    font-weight: 900;
 `;
 
 const Description = styled.p`
